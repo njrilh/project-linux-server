@@ -49,7 +49,7 @@ mkdir ~/crud-express && cd ~/crud-express // bikin di dir home
 	npm install express, mysql2, cors, body_parser
 
 sudo chown username:username /home // Buat agar bisa di akses di sshftp untuk upload file backend
-scp "C:\..." username@IP:/home /// Buka di Windows terminal untunk mengaplod file js
+scp "C:\...\namafile.js" username@IP:/home /// Buka di Windows terminal untunk mengaplod file js
 	const express = require("express");
 	const mysql = require("mysql2");
 	const bodyParser = require("body-parser");
@@ -101,7 +101,7 @@ node index.js // jalankan expressjs buka di port 3000/api/users
 
 sudo chown username:username /usr/share/nginx/html // Buat agar bisa di akses di sshftp untuk upload file frontend
 
-scp "C:\..." username@IP:/usr/share/nginx/html /// Buka di Windows terminal untunk mengaplod file html
+scp "C:\...\namafile.html" username@IP:/usr/share/nginx/html /// Buka di Windows terminal untunk mengaplod file html
 	<!DOCTYPE html>
 	<html lang="en">
 	<head>
