@@ -19,6 +19,14 @@ ping 0.0.0.0 // cek ping
 
 sudo systemctl stop firewalld // stop firewall
 
+sudo dnf install openssh-server -y // install openssh
+
+sudo systemctl start sshd // jalankan ssh
+
+sudo adduser username // buat username untuk sshftp
+
+sudo passwd password // buat password untuk shftp
+
 sudo dnf install epel-release // istall epel
 
 sudo dnf install nginx -y //install nginx
@@ -40,7 +48,8 @@ mkdir ~/crud-express && cd ~/crud-express // bikin di dir home
 	npm init -y
 	npm install express, mysql2, cors, body_parser
 
-touch index.js // bikin di home
+sudo chown username:username /home // Buat agar bisa di akses di sshftp untuk upload file backend
+scp "C:\..." username@192.168.1.20:/home /// Buka di Windows terminal untunk mengaplod file js
 	const express = require("express");
 	const mysql = require("mysql2");
 	const bodyParser = require("body-parser");
@@ -90,8 +99,9 @@ touch index.js // bikin di home
 
 node index.js // jalankan expressjs buka di port 3000/api/users
 
+sudo chown username:username /usr/share/nginx/html // Buat agar bisa di akses di sshftp untuk upload file frontend
 
-sudo nano /usr/share/nginx/html/index.html // Frontend
+scp "C:\..." username@192.168.1.20:/usr/share/nginx/html /// Buka di Windows terminal untunk mengaplod file html
 	<!DOCTYPE html>
 	<html lang="en">
 	<head>
@@ -156,7 +166,6 @@ cd /usr/share/nginx/html // masuk ke dir html untuk mendapatkan index.php
 	unzip phpMyAdmin-latest-all-languages.zip
 	mv phpMyAdmin-*-all-languages phpmyadmin
 
-
 sudo nano /etc/nginx/conf.d/default.conf // Konfigurasi rute nginx
 	server {
 		listen 80;
@@ -180,8 +189,6 @@ sudo nano /etc/nginx/conf.d/default.conf // Konfigurasi rute nginx
 		}
 	}
 
-
-
 buat database di ip/phpmyadmin
 USE crud_db;
 
@@ -190,11 +197,3 @@ CREATE TABLE users (
   name VARCHAR(100),
   email VARCHAR(100)
 );
-
-sudo dnf install openssh-server -y
-sudo systemctl start sshd
-sudo adduser username
-sudo passwd password
-sudo chown username:username /usr/share/nginx/html
-
-scp "C:\..." username@192.168.1.20:/usr/share/nginx/html
