@@ -1,0 +1,200 @@
+//installasi CentOS -------------
+ram 6gb, cpu 4, storage 25++
+Birdge adapter
+installasi destinasi
+root pw //bikin user optional
+software slection (server)
+// ------------------------------
+
+// cek network ------------------
+nmcli connection show // menshow keersediaan perangkat network
+
+sudo nmtui //menampilakan UI untuk menyetting koneksi network
+
+sudo systemctl restart NetworkManager // merestart network
+
+ip a // cek ip
+
+ping 0.0.0.0 // cek ping
+
+sudo systemctl stop firewalld // stop firewall
+
+sudo dnf install epel-release // istall epel
+
+sudo dnf install nginx -y //install nginx
+
+sudo dnf install mariadb, mariadb-server, // istall mariadb dan mariadb server
+
+sudo mysql // konfigurasi mysql
+	SELECT user, host FROM mysql.user; // cek host dan user
+	CREATE DATABASE nazril_db;
+	CREATE USER 'user'@'%' IDENTIFIED BY 'pass';
+	GRANT ALL PRIVILEGES ON nazril_db.* TO 'user'@'%';
+	FLUSH PRIVILEGES;
+
+sudo dnf install php, php-mysqlnd, phpmyadmin,
+
+sudo dnf install nodejs -y // install nodejs
+
+mkdir ~/crud-express && cd ~/crud-express // bikin di dir home
+	npm init -y
+	npm install express, mysql2, cors, body_parser
+
+touch index.js // bikin di home
+	const express = require("express");
+	const mysql = require("mysql2");
+	const bodyParser = require("body-parser");
+	const cors = require("cors");
+
+	const app = express();
+	app.use(cors());
+	app.use(bodyParser.json());
+
+	const db = mysql.createConnection({
+	  host: "192.168.1.25",
+	  user: "user",
+	  password: "pass",
+	  database: "nazril_db"
+	});
+
+	db.connect(err => {
+	  if (err) throw err;
+	  console.log("Connected to DB");
+	});
+
+	app.get("/api/users", (req, res) => {
+	  db.query("SELECT * FROM users", (err, result) => {
+	    if (err) return res.status(500).send(err);
+	    res.json(result);
+	  });
+	});
+
+	app.post("/api/users", (req, res) => {
+	  const { name, email } = req.body;
+	  db.query("INSERT INTO users (name, email) VALUES (?, ?)", [name, email], (err) => {
+	    if (err) return res.status(500).send(err);
+	    res.send("User added.");
+	  });
+	});
+
+	app.delete("/api/users/:id", (req, res) => {
+	  db.query("DELETE FROM users WHERE id = ?", [req.params.id], (err) => {
+	    if (err) return res.status(500).send(err);
+	    res.send("User deleted.");
+	  });
+	});
+
+	app.listen(3000, () => {
+	  console.log("API running on port 3000");
+	});
+
+node index.js // jalankan expressjs buka di port 3000/api/users
+
+
+sudo nano /usr/share/nginx/html/index.html // Frontend
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+	  <meta charset="UTF-8">
+	  <title>CRUD User</title>
+	</head>
+	<body>
+	  <h2>Users</h2>
+	  <ul id="user-list"></ul>
+
+	  <h3>Add User</h3>
+	  <form id="user-form">
+	    <input type="text" id="name" placeholder="Name" required>
+	    <input type="email" id="email" placeholder="Email" required>
+	    <button type="submit">Add</button>
+	  </form>
+
+	  <script>
+	    const API_URL = 'http://192.168.1.25:3000/api/users';
+
+	    async function fetchUsers() {
+	      const res = await fetch(API_URL);
+	      const users = await res.json();
+	      const list = document.getElementById('user-list');
+	      list.innerHTML = '';
+	      users.forEach(user => {
+	        const li = document.createElement('li');
+	        li.textContent = `${user.name} (${user.email})`;
+	        const delBtn = document.createElement('button');
+	        delBtn.textContent = 'Delete';
+	        delBtn.onclick = async () => {
+	          await fetch(`${API_URL}/${user.id}`, { method: 'DELETE' });
+	          fetchUsers();
+	        };
+	        li.appendChild(delBtn);
+        	list.appendChild(li);
+	      });
+	    }
+	
+	    document.getElementById('user-form').addEventListener('submit', async e => {
+	      e.preventDefault();
+	      const name = document.getElementById('name').value;
+	      const email = document.getElementById('email').value;
+	      await fetch(API_URL, {
+	        method: 'POST',
+	        headers: { 'Content-Type': 'application/json' },
+	        body: JSON.stringify({ name, email })
+	      });
+	      document.getElementById('name').value = '';
+	      document.getElementById('email').value = '';
+	      fetchUsers();
+	    });
+	
+	    fetchUsers();
+	  </script>
+	</body>
+	</html>
+
+
+cd /usr/share/nginx/html // masuk ke dir html untuk mendapatkan index.php
+	wget https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.zip
+	unzip phpMyAdmin-latest-all-languages.zip
+	mv phpMyAdmin-*-all-languages phpmyadmin
+
+
+sudo nano /etc/nginx/conf.d/default.conf // Konfigurasi rute nginx
+	server {
+		listen 80;
+		server_name 192.168.1.25;
+	
+		location / {
+			root /usr/share/nginx/html;
+			index index.html;
+			try_files $uri $uri/ =404;
+		}
+
+		location /phpmyadmin/ {
+			root /usr/share/nginx/html;
+			index index.php;
+			location ~ \.php$ {
+				fastcgi_pass unix:/run/php-fpm/www.sock;
+				fastcgi_index index.php;
+				include fastcgi_params;
+				fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+			}
+		}
+	}
+
+
+
+buat database di ip/phpmyadmin
+USE crud_db;
+
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  email VARCHAR(100)
+);
+
+sudo dnf install openssh-server -y
+sudo systemctl start sshd
+sudo adduser username
+sudo passwd password
+sudo chown username:username /usr/share/nginx/html
+
+scp "C:\..." username@192.168.1.20:/usr/share/nginx/html
