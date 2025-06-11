@@ -11,6 +11,8 @@ nmcli connection show // menshow keersediaan perangkat network
 
 sudo nmtui //menampilakan UI untuk menyetting koneksi network
 
+sudo usermod -aG wheel nama_user // untuk mengakses seperti root
+
 sudo systemctl restart NetworkManager // merestart network
 
 ip a // cek ip
