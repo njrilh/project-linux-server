@@ -11,7 +11,7 @@ ping 0.0.0.0 // cek ping
 
 nmcli connection show // menshow keersediaan perangkat network
 
-sudo nmtui //menampilakan UI untuk menyetting koneksi network
+sudo nmtui //menampilakan UI untuk menyeting koneksi network
 
 sudo usermod -aG wheel nama_user // untuk mengakses seperti root
 
@@ -21,7 +21,11 @@ ping 0.0.0.0 // cek ping
 
 ip a // cek ip
 
-sudo dnf install mariadb, mariadb-server, // istall mariadb dan mariadb server
+sudo dnf install epel-release -y // istall epel
+sudo dnf install php, php-fpm, php-mysqlnd, phpmyadmin -y,
+sudo dnf install nginx -y //install nginx
+
+sudo dnf install mariadb, mariadb-server, -y // istall mariadb dan mariadb server
 
 sudo systemctl start mariadb // nyalakan mariadb
 
@@ -32,17 +36,11 @@ sudo mysql // konfigurasi mysql
 	GRANT ALL PRIVILEGES ON nazril_db.* TO 'user'@'%';
 	FLUSH PRIVILEGES;
 
-sudo dnf install php, php-fpm, php-mysqlnd, phpmyadmin,
-
 sudo dnf install openssh-server -y // install openssh
 
 sudo systemctl start sshd // jalankan ssh
 
 cd /
-sudo dnf install epel-release // istall epel
-
-sudo dnf install nginx -y //install nginx
-
 sudo chown username:username /usr/share/nginx/html // Buat agar bisa di akses di sshftp untuk upload file frontend
 
 scp "C:\...\namafile.html" username@IP:/usr/share/nginx/html /// Buka di Windows terminal untunk mengaplod file html
@@ -71,16 +69,16 @@ sudo nano /etc/nginx/conf.d/default.conf // Konfigurasi rute nginx
     		listen 80;
     		server_name 192.168.1.20;
 
-    		root /usr/share/nginx/html;
-    		index index.php index.html;
-
     		location / {
+    		root /usr/share/nginx/html;
+    		index index.html;
         	try_files $uri $uri/ =404;
     		}
 
     		location /phpmyadmin {
         	root /usr/share/nginx/html;
         	index index.php;
+		try_files $uri $uri/ =404;
    		}
 
     		location ~ \.php$ {
