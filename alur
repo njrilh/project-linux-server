@@ -32,7 +32,7 @@ sudo mysql // konfigurasi mysql
 	GRANT ALL PRIVILEGES ON nazril_db.* TO 'user'@'%';
 	FLUSH PRIVILEGES;
 
-sudo dnf install php, php-mysqlnd, phpmyadmin,
+sudo dnf install php, php-fpm, php-mysqlnd, phpmyadmin,
 
 sudo dnf install nodejs -y // install nodejs
 
