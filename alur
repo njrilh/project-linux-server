@@ -91,6 +91,7 @@ sudo nano /etc/nginx/conf.d/default.conf // Konfigurasi rute nginx
     		}
 }
 
+sudo systemctl start php-fpm // jalankan php-fpm
 sudo systemctl restart nginx // coba di browser
 
 buat database di IP/phpmyadmin
