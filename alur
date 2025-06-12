@@ -35,6 +35,8 @@ sudo dnf install nginx -y //install nginx
 
 sudo dnf install mariadb, mariadb-server, // istall mariadb dan mariadb server
 
+sudo systemctl start mariadb // nyalakan mariadb
+
 sudo mysql // konfigurasi mysql
 	SELECT user, host FROM mysql.user; // cek host dan user
 	CREATE DATABASE nazril_db;
