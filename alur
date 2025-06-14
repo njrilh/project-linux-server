@@ -1,28 +1,32 @@
 //installasi CentOS -------------
-ram 6gb, cpu 4, storage 25++
+ram 6gb, cpu 4, storage -+25gb
 Birdge adapter
-installasi destinasi
-root pw //bikin user optional
+run
+pilih install centos streamm 9 (paling atas)
 software slection (server)
+setting installasi destinasi
+root pw
+bikin user //optional
+setting networkmanagement (ethernet automatic saja)
 // ------------------------------
 
 // cek network ------------------
-ping 0.0.0.0 // cek ping
-
-nmcli connection show // menshow keersediaan perangkat network
+sudo usermod -aG wheel nama_user // untuk mengakses seperti root
 
 sudo nmtui //menampilakan UI untuk menyeting koneksi network
-
-sudo usermod -aG wheel nama_user // untuk mengakses seperti root
 
 sudo systemctl restart NetworkManager // merestart network
 
 ping 0.0.0.0 // cek ping
 
+nmcli connection show // menshow keersediaan perangkat network
+
 ip a // cek ip
 
 sudo dnf install epel-release -y // istall epel
+
 sudo dnf install php, php-fpm, php-mysqlnd, phpmyadmin -y,
+
 sudo dnf install nginx -y //install nginx
 
 sudo dnf install mariadb, mariadb-server, -y // istall mariadb dan mariadb server
@@ -40,7 +44,6 @@ sudo dnf install openssh-server -y // install openssh
 
 sudo systemctl start sshd // jalankan ssh
 
-cd /
 sudo chown username:username /usr/share/nginx/html // Buat agar bisa di akses di sshftp untuk upload file frontend
 
 scp "C:\...\namafile.html" username@IP:/usr/share/nginx/html /// Buka di Windows terminal untunk mengaplod file html
@@ -52,7 +55,7 @@ sudo nano /etc/nginx/conf.d/default.conf // Konfigurasi rute nginx
 	
 		location / {
 			root /usr/share/nginx/html;
-			index index.html; // file html yang di upload ssh tadi
+			index index.html; // file html bawaan nginx
 			try_files $uri $uri/ =404;
 		}
 sudo systemctl start nginx // coba di browser
@@ -89,7 +92,6 @@ sudo nano /etc/nginx/conf.d/default.conf // Konfigurasi rute nginx
     		}
 }
 
-sudo systemctl start php-fpm // jalankan php-fpm
 sudo systemctl restart nginx // coba di browser
 
 buat database di IP/phpmyadmin
@@ -103,15 +105,19 @@ CREATE TABLE users (
 
 sudo dnf install nodejs -y // install nodejs
 
-cd /home
-mkdir ~/crud-express && cd ~/crud-express // bikin di dir home
+cd /home/user // masuk ke dir user
+mkdir drudex // buat dir crudexx
+cd crudex // masuk ke dir dcrudex	
+	npm -v //mengecek versi npm dan apakah nodejs sudah tersedia
 	npm init -y
-	npm install express, mysql2, cors, body_parser
+	npm install express, mysql2, cors, body-parser
 
-sudo chown username:username /home // Buat agar bisa di akses di sshftp untuk upload file backend
-scp "C:\...\namafile.js" username@IP:/home /// Buka di Windows terminal untunk mengaplod file js
+sudo chown username:username /home/user/crudex // Buat agar bisa di akses di sshftp untuk upload file backend
+scp "C:\...\namafile.js" username@IP:/home/user/crudex /// Buka di Windows terminal untunk mengaplod file js
 
-node index.js // jalankan expressjs buka di port 3000/api/users
+configurasi kodingan index.js dan hime.html
+
+node index.js // jalankan expressjs di dalam dir /home/user/crudex & buka di port :3000/api/users
 
 //---------------------------------------------------------------------------------------------------
 	const express = require("express");
