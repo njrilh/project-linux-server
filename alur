@@ -19,7 +19,7 @@ sudo systemctl restart NetworkManager // merestart network
 
 ping 0.0.0.0 // cek ping
 
-nmcli connection show // menshow keersediaan perangkat network
+nmcli connection show //  # Lihat koneksi jaringan
 
 ip a // cek ip
 
