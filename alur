@@ -58,9 +58,23 @@ sudo nano /etc/nginx/conf.d/default.conf // Konfigurasi rute nginx
 			index index.html; // file html bawaan nginx
 			try_files $uri $uri/ =404;
 		}
+sudo systemctl enable firewalld //mennyalakan firewall
+
+sudo sysytemctl start firewalld //mengaktifkan firewall
+
+sudo systemctl status firewalld //cek status firewall
+
 sudo systemctl start nginx // coba di browser
 
-sudo systemctl stop firewalld // stop firewall
+sudo firewall-cmd --list-all //cek conf firewall
+
+sudo firewall-cmd --permanent --add-service=http dan https //tambah http/s ke firewall
+
+sudo firewall-cmd --reload //reload conf firewall
+
+sudo firewall-cmd --permanent --add-port=80/tcp dan 3000(untuk nodejs) //tambah port 80 dan 3000 ke firewall
+
+sudo netstat -tuln | grep:80 //
 
 cd /usr/share/nginx/html // masuk ke dir html untuk mendapatkan index.php
 	wget https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.zip
